@@ -3,47 +3,37 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 body { background-color: #1a0026; color: #ffffff; }
 
-/* Botão Compartilhar Estilizado (Formatação Forçada) */
+#promoBarra {
+    display: none; cursor: pointer; background: #00f2ff; color: #1a0026; 
+    padding: 8px; font-weight: 900; text-transform: uppercase; 
+    align-items: center; justify-content: center; gap: 10px;
+    border-bottom: 3px solid #1a0026;
+    position: sticky; top: 0; z-index: 1000 !important; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    font-size: 0.85rem;
+}
+#promoBarra img { width: 40px; height: 40px; border-radius: 6px; border: 2px solid #1a0026; object-fit: cover; }
+
 #btnCompartilhar {
     position: fixed !important; 
-    top: 15px !important; 
-    right: 15px !important; 
+    bottom: 20px !important; 
+    left: 20px !important; 
     z-index: 1001 !important;
-    
     background: #2d004d !important; 
     color: #00f2ff !important; 
     border: 2px solid #00f2ff !important;
-    
-    padding: 8px 16px !important; 
+    padding: 12px 20px !important; 
     border-radius: 50px !important; 
     font-weight: 900 !important; 
     text-transform: uppercase !important; 
-    font-size: 0.75rem !important;
-    
-    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3) !important;
-    
+    font-size: 0.85rem !important;
+    box-shadow: 0 4px 15px rgba(0, 242, 255, 0.4) !important;
     cursor: pointer !important;
-    outline: none !important;
     appearance: none !important;
-    -webkit-appearance: none !important;
 }
 
-header { 
-    background: linear-gradient(135deg, #4b0082, #8a2be2); 
-    padding: 2.5rem 1rem; text-align: center; 
-    border-bottom: 4px solid #00f2ff;
-}
+header { background: linear-gradient(135deg, #4b0082, #8a2be2); padding: 2.5rem 1rem; text-align: center; border-bottom: 4px solid #00f2ff; }
 header h1 { font-family: 'Montserrat', sans-serif; font-size: 2.5rem; text-transform: uppercase; }
 header h1 span { color: #00f2ff; }
-
-#promoBarra {
-    display: none; cursor: pointer; background: #00f2ff; color: #1a0026; 
-    padding: 12px; font-weight: 900; text-transform: uppercase; 
-    align-items: center; justify-content: center; gap: 15px;
-    border-bottom: 3px solid #1a0026;
-    position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-#promoBarra img { width: 55px; height: 55px; border-radius: 8px; border: 2px solid #1a0026; object-fit: cover; }
 
 .search-wrapper { padding: 20px 1rem; max-width: 1100px; margin: 0 auto; }
 .search-box { background: #2d004d; padding: 5px; border-radius: 50px; border: 1px solid #4b0082; }
@@ -57,11 +47,7 @@ header h1 span { color: #00f2ff; }
 .btn-whatsapp { background: #25d366; color: white; border: none; padding: 12px; border-radius: 50px; font-weight: bold; width: 100%; cursor: pointer; }
 
 .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; padding: 20px; }
-.modal-content { 
-    background: #2d004d; padding: 25px; border-radius: 20px; width: 100%; max-width: 400px; 
-    border: 2px solid #00f2ff; color: white; max-height: 90vh; overflow-y: auto; 
-}
-.modal-content h2 { margin-bottom: 15px; color: #00f2ff; text-align: center; }
+.modal-content { background: #2d004d; padding: 25px; border-radius: 20px; width: 100%; max-width: 400px; border: 2px solid #00f2ff; color: white; }
 .modal-content input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #4b0082; background: #1a0026; color: white; }
 .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
 .btn-cancelar { flex: 1; background: #4b0082; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
