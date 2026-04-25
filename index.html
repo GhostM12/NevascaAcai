@@ -12,7 +12,7 @@
 
 <header><h1>Nevasca<span> Açaí</span></h1></header>
 
-<div id="promoBarra" onclick="window.open(linkWhatsAppPromo, '_blank')">
+<div id="promoBarra" onclick="abrirModal(document.getElementById('promoTexto').innerText, document.getElementById('promoValor').innerText)">
     <img id="promoFoto" src="">
     <div>🔥 DESTAQUE: <span id="promoTexto"></span> - R$ <span id="promoValor"></span></div>
 </div>
@@ -53,7 +53,6 @@
     
     let todos = [];
     let produtoAtual = { nome: "", preco: "" };
-    window.linkWhatsAppPromo = "";
 
     window.abrirModal = (nome, preco) => {
         produtoAtual = { nome, preco };
@@ -108,7 +107,6 @@
             document.getElementById('promoTexto').innerText = d.nome;
             document.getElementById('promoValor').innerText = d.preco;
             document.getElementById('promoFoto').src = d.img || '';
-            window.linkWhatsAppPromo = `https://wa.me/5534998745318?text=Quero a promoção: ${d.nome}`;
         }
     })();
 </script>
