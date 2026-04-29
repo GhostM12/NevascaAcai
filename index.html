@@ -111,7 +111,7 @@
     });
 
     (async () => {
-        // Carregar Promoção 1
+        // Promoção 1
         const snap = await getDoc(doc(db, "config", "promocao_dia"));
         if (snap.exists()) {
             const d = snap.data();
@@ -121,7 +121,7 @@
             document.getElementById('promoFoto').src = d.img || '';
         }
 
-        // Carregar Promoção 2 (ADICIONADO)
+        // Promoção 2
         const snap2 = await getDoc(doc(db, "config", "promocao_extra"));
         if (snap2.exists()) {
             const d2 = snap2.data();
