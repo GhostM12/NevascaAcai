@@ -13,6 +13,18 @@ body { background-color: #1a0026; color: #ffffff; }
 }
 #promoBarra img { width: 40px; height: 40px; border-radius: 6px; border: 2px solid #1a0026; object-fit: cover; }
 
+/* ESTILO DA SEGUNDA BARRA (ADICIONADO) */
+.promo-extra {
+    display: none; cursor: pointer; background: #ff00ea; color: white; 
+    padding: 8px; font-weight: 900; text-transform: uppercase; 
+    align-items: center; justify-content: center; gap: 10px;
+    border-bottom: 3px solid #1a0026;
+    position: sticky; top: 59px; /* Fica abaixo da primeira barra */
+    z-index: 999 !important; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    font-size: 0.85rem;
+}
+.promo-extra img { width: 40px; height: 40px; border-radius: 6px; border: 2px solid white; object-fit: cover; }
+
 #btnCompartilhar {
     position: fixed !important; 
     bottom: 20px !important; 
@@ -52,3 +64,21 @@ header h1 span { color: #00f2ff; }
 .modal-buttons { display: flex; gap: 10px; margin-top: 15px; }
 .btn-cancelar { flex: 1; background: #4b0082; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
 .btn-confirmar { flex: 1; background: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+
+.header-info {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(0, 242, 255, 0.1);
+    border-radius: 10px;
+    border: 1px solid #00f2ff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.header-info p {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
+}

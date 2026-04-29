@@ -17,6 +17,14 @@
         <button class="btn-save" id="btnSalvarPromo">ATUALIZAR DESTAQUE</button>
     </div>
 
+    <h3 style="margin-top: 40px;">🔥 Segunda Promoção (Extra)</h3>
+    <div class="form-group">
+        <input type="text" id="promoNome2" placeholder="Nome da Promoção 2">
+        <input type="text" id="promoPreco2" placeholder="Preço (ex: 15.00)">
+        <input type="text" id="promoImg2" placeholder="URL da Imagem da Promoção 2">
+        <button class="btn-save" id="btnSalvarPromo2" style="background: #ff00ea;">ATUALIZAR PROMO 2</button>
+    </div>
+
     <h3 style="margin-top: 40px;">➕ Adicionar Novo Produto</h3>
     <div class="form-group">
         <input type="text" id="n" placeholder="Nome do Produto">
@@ -27,29 +35,36 @@
     </div>
 
     <h3 style="margin-top: 40px;">📋 Produtos Cadastrados</h3>
-    <div id="listaAdmin"></div>
+    <div id="listaAdmin">Carregando produtos...</div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, setDoc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, doc, updateDoc, setDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyDdgT50VAOkLWpDrbBJm_dLdfsehkSJBE", projectId: "zaptishopwhats" };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const db = getFirestore(initializeApp(firebaseConfig));
     const colRef = collection(db, "produtos");
-    
-    // Atualizar Promoção
+
     document.getElementById('btnSalvarPromo').onclick = async () => {
-        await setDoc(doc(db, "config", "promocao_dia"), { 
-            nome: document.getElementById('promoNome').value, 
-            preco: document.getElementById('promoPreco').value, 
-            img: document.getElementById('promoImg').value 
+        await setDoc(doc(db, "config", "promocao_dia"), {
+            nome: document.getElementById('promoNome').value,
+            preco: document.getElementById('promoPreco').value,
+            img: document.getElementById('promoImg').value
         });
         alert("Promoção atualizada!");
     };
 
-    // Salvar Produto
+    // Lógica da Segunda Promoção (ADICIONADA)
+    document.getElementById('btnSalvarPromo2').onclick = async () => {
+        await setDoc(doc(db, "config", "promocao_extra"), {
+            nome: document.getElementById('promoNome2').value,
+            preco: document.getElementById('promoPreco2').value,
+            img: document.getElementById('promoImg2').value
+        });
+        alert("Segunda promoção atualizada!");
+    };
+
     document.getElementById('btnSalvar').onclick = async () => {
         await addDoc(colRef, { 
             nome: document.getElementById('n').value,
@@ -60,23 +75,28 @@
         alert("Produto adicionado!");
     };
 
-    // Função Excluir
-    window.apagar = async (id) => {
-        if(confirm("Tem certeza que deseja excluir este produto?")) {
-            await deleteDoc(doc(db, "produtos", id));
-        }
+    window.alterarPreco = async (id) => {
+        const novoPreco = document.getElementById(`input_preco_${id}`).value;
+        if (!novoPreco) return alert("Digite o novo valor!");
+        await updateDoc(doc(db, "produtos", id), { preco: novoPreco });
+        alert("Preço atualizado!");
     };
 
-    // Listar Produtos com Botão Excluir
+    window.apagar = async (id) => {
+        if(confirm("Tem certeza que deseja excluir?")) await deleteDoc(doc(db, "produtos", id));
+    };
+
     onSnapshot(colRef, (snap) => {
         const lista = document.getElementById('listaAdmin');
         lista.innerHTML = "";
         snap.forEach(d => {
             const p = d.data();
             lista.innerHTML += `
-                <div style="background: #1a0026; padding: 10px; margin: 10px 0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #4b0082;">
-                    <span>${p.nome} - R$ ${p.preco}</span>
-                    <button onclick="apagar('${d.id}')" style="background: #ff4d4d; border: none; color: white; padding: 5px 15px; border-radius: 4px; cursor: pointer;">Excluir</button>
+                <div style="background: #2d004d; padding: 15px; margin: 10px 0; border-radius: 8px; display: flex; align-items: center; gap: 10px; color: white; border: 1px solid #4b0082;">
+                    <span style="flex-grow: 1;">${p.nome} - <strong>R$ ${p.preco}</strong></span>
+                    <input type="text" id="input_preco_${d.id}" placeholder="Novo R$" style="width: 80px; padding: 5px;">
+                    <button onclick="alterarPreco('${d.id}')" style="background:#00f2ff; border:none; padding:5px 10px; cursor:pointer;">Atualizar</button>
+                    <button onclick="apagar('${d.id}')" style="background:red; color:white; border:none; padding:5px 10px; cursor:pointer;">X</button>
                 </div>`;
         });
     });

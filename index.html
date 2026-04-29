@@ -23,6 +23,11 @@
     <div>🔥 DESTAQUE: <span id="promoTexto"></span> - R$ <span id="promoValor"></span></div>
 </div>
 
+<div id="promoBarra2" class="promo-extra" onclick="abrirModal(document.getElementById('promoTexto2').innerText, document.getElementById('promoValor2').innerText)">
+    <img id="promoFoto2" src="">
+    <div>✨ EXTRA: <span id="promoTexto2"></span> - R$ <span id="promoValor2"></span></div>
+</div>
+
 <div class="search-wrapper">
     <div class="search-box"><input type="text" id="campoBusca" placeholder="🔍 Buscar sabor..." onkeyup="filtrar()"></div>
 </div>
@@ -106,6 +111,7 @@
     });
 
     (async () => {
+        // Carregar Promoção 1
         const snap = await getDoc(doc(db, "config", "promocao_dia"));
         if (snap.exists()) {
             const d = snap.data();
@@ -113,6 +119,16 @@
             document.getElementById('promoTexto').innerText = d.nome;
             document.getElementById('promoValor').innerText = d.preco;
             document.getElementById('promoFoto').src = d.img || '';
+        }
+
+        // Carregar Promoção 2 (ADICIONADO)
+        const snap2 = await getDoc(doc(db, "config", "promocao_extra"));
+        if (snap2.exists()) {
+            const d2 = snap2.data();
+            document.getElementById('promoBarra2').style.display = 'flex';
+            document.getElementById('promoTexto2').innerText = d2.nome;
+            document.getElementById('promoValor2').innerText = d2.preco;
+            document.getElementById('promoFoto2').src = d2.img || '';
         }
     })();
 </script>
