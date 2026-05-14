@@ -29,10 +29,78 @@
             font-family: sans-serif;
             margin-bottom: 30px;
             transition: transform 0.2s;
+            cursor: pointer;
+            border: none;
         }
         .btn-banner-whatsapp:hover {
             transform: scale(1.05);
             background-color: #128c7e;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .modal-content h2 {
+            margin-top: 0;
+            color: #4b0082;
+            text-align: center;
+        }
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-confirmar {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            flex: 1;
+            cursor: pointer;
+        }
+        .btn-cancelar {
+            background-color: #ff4b2b;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            flex: 1;
+            cursor: pointer;
+        }
+        #pedidoNumero {
+            font-weight: bold;
+            color: #ff8c00;
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -50,31 +118,43 @@
     </div>
 </header>
 
-<!-- Seção de Banners Promocionais -->
+<!-- Seção de Banners Promocionais (5 espaços) -->
 <div class="banner-container">
-    <img src="imagen1.jpg" alt="Super Promoção de Inverno" class="banner-image">
+    <img src="imagem 1.jpg" alt="Promoção 1" class="banner-image">
     <br>
-    <a href="https://wa.me/5534998745318?text=Olá! Vi a promoção de inverno de 70% e gostaria de fazer um pedido." target="_blank" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</a>
+    <button onclick="abrirCheckout('Promoção Imagem 1')" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</button>
 </div>
 
 <div class="banner-container">
-    <img src="imagen2.jpg" alt="Promoção Monte seu Açaí" class="banner-image">
+    <img src="imagem 2.jpg" alt="Promoção 2" class="banner-image">
     <br>
-    <a href="https://wa.me/5534998745318?text=Olá! Quero aproveitar a promoção do Copo de Açaí com 6 adicionais por R$33,00." target="_blank" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</a>
+    <button onclick="abrirCheckout('Promoção Imagem 2')" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</button>
 </div>
 
 <div class="banner-container">
-    <img src="imagen3.jpg" alt="Combos de Açaí" class="banner-image">
+    <img src="imagem 3.jpg" alt="Promoção 3" class="banner-image">
     <br>
-    <a href="https://wa.me/5534998745318?text=Olá! Gostaria de pedir um dos Combos de 500ml." target="_blank" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</a>
+    <button onclick="abrirCheckout('Promoção Imagem 3')" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</button>
 </div>
 
-<div id="promoBarra" onclick="abrirModal(document.getElementById('promoTexto').innerText, document.getElementById('promoValor').innerText)">
+<div class="banner-container">
+    <img src="imagem 4.jpg" alt="Promoção 4" class="banner-image">
+    <br>
+    <button onclick="abrirCheckout('Promoção Imagem 4')" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</button>
+</div>
+
+<div class="banner-container">
+    <img src="imagem 5.jpg" alt="Promoção 5" class="banner-image">
+    <br>
+    <button onclick="abrirCheckout('Promoção Imagem 5')" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</button>
+</div>
+
+<div id="promoBarra" onclick="abrirCheckout(document.getElementById('promoTexto').innerText)">
     <img id="promoFoto" src="">
     <div>🔥 DESTAQUE: <span id="promoTexto"></span> - R$ <span id="promoValor"></span></div>
 </div>
 
-<div id="promoBarra2" class="promo-extra" onclick="abrirModal(document.getElementById('promoTexto2').innerText, document.getElementById('promoValor2').innerText)">
+<div id="promoBarra2" class="promo-extra" onclick="abrirCheckout(document.getElementById('promoTexto2').innerText)">
     <img id="promoFoto2" src="">
     <div>✨ EXTRA: <span id="promoTexto2"></span> - R$ <span id="promoValor2"></span></div>
 </div>
@@ -85,16 +165,17 @@
 
 <main class="container" id="vitrine"></main>
 
+<!-- Modal de Checkout -->
 <div id="modalCheckout" class="modal">
     <div class="modal-content">
         <h2>Finalizar Pedido</h2>
+        <p style="text-align: center; margin-bottom: 15px;">Pedido Nº: <span id="pedidoNumero"></span></p>
         <input type="text" id="cNome" placeholder="Seu Nome">
-        <input type="text" id="cEnd" placeholder="Endereço de Entrega">
-        <input type="text" id="cNum" placeholder="Número da casa">
-        <input type="text" id="cTel" placeholder="Seu Telefone">
+        <input type="text" id="cEnd" placeholder="Endereço Completo">
+        <textarea id="cObs" placeholder="Observações (ex: sem paçoca, extra leite ninho...)" rows="3"></textarea>
         <div class="modal-buttons">
-            <button onclick="document.getElementById('modalCheckout').style.display='none'" class="btn-cancelar">Cancelar</button>
-            <button onclick="confirmarPedido()" class="btn-confirmar">CONFIRMAR</button>
+            <button onclick="fecharModal()" class="btn-cancelar">Voltar</button>
+            <button onclick="confirmarPedidoWhatsApp()" class="btn-confirmar">ENVIAR WHATSAPP</button>
         </div>
     </div>
 </div>
@@ -125,28 +206,43 @@
     const db = getFirestore(app);
     
     let todos = [];
-    let produtoAtual = { nome: "", preco: "" };
+    let itemSelecionado = "";
 
-    window.abrirModal = (nome, preco) => {
-        produtoAtual = { nome, preco };
+    window.abrirCheckout = (item) => {
+        itemSelecionado = item;
+        const numPedido = Math.floor(Math.random() * 9000) + 1000;
+        document.getElementById('pedidoNumero').innerText = numPedido;
         document.getElementById('modalCheckout').style.display = 'flex';
+    };
+
+    window.fecharModal = () => {
+        document.getElementById('modalCheckout').style.display = 'none';
+    };
+
+    window.confirmarPedidoWhatsApp = () => {
+        const nome = document.getElementById('cNome').value;
+        const endereco = document.getElementById('cEnd').value;
+        const obs = document.getElementById('cObs').value;
+        const numPedido = document.getElementById('pedidoNumero').innerText;
+
+        if(!nome || !endereco) {
+            alert("Por favor, preencha nome e endereço.");
+            return;
+        }
+
+        const mensagem = `*NOVO PEDIDO NEVASCA # ${numPedido}*\n\n` +
+                         `*Cliente:* ${nome}\n` +
+                         `*Item:* ${itemSelecionado}\n` +
+                         `*Endereço:* ${endereco}\n` +
+                         `*Observações:* ${obs || 'Nenhuma'}`;
+
+        const url = `https://wa.me/5534998745318?text=${encodeURIComponent(mensagem)}`;
+        window.open(url, '_blank');
+        fecharModal();
     };
 
     window.abrirPopupQR = () => {
         document.getElementById('popupQR').style.display = 'flex';
-    };
-
-    window.confirmarPedido = () => {
-        const nome = document.getElementById('cNome').value;
-        const end = document.getElementById('cEnd').value;
-        const num = document.getElementById('cNum').value;
-        const tel = document.getElementById('cTel').value;
-        if(!nome || !end || !tel) return alert("Por favor, preencha todos os campos!");
-        const cod = Math.floor(Math.random() * 9000 + 1000);
-        const textoMensagem = `*PEDIDO #${cod}*\n\n*Item:* ${produtoAtual.nome}\n*Valor:* R$ ${produtoAtual.preco}\n\n*DADOS DE ENTREGA*\n*Nome:* ${nome}\n*Endereço:* ${end}, ${num}\n*Telefone:* ${tel}`;
-        const url = `https://wa.me/5534998745318?text=${encodeURIComponent(textoMensagem)}`;
-        window.open(url, '_blank');
-        document.getElementById('modalCheckout').style.display = 'none';
     };
 
     const render = (lista) => {
@@ -157,7 +253,7 @@
                 <div class="product-info">
                     <h3>${p.nome}</h3>
                     <p class="price">R$ ${p.preco}</p>
-                    <button class="btn-whatsapp" onclick="abrirModal('${p.nome}', '${p.preco}')">PEDIR AGORA</button>
+                    <button class="btn-whatsapp" onclick="abrirCheckout('${p.nome}')">PEDIR AGORA</button>
                 </div>
             </div>`).join('');
     };
