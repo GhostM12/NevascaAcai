@@ -5,6 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Açaí Nevasca</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .banner-container {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 90%;
+        }
+        .banner-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        .btn-banner-whatsapp {
+            display: inline-block;
+            background-color: #25d366;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-bottom: 30px;
+            transition: transform 0.2s;
+        }
+        .btn-banner-whatsapp:hover {
+            transform: scale(1.05);
+            background-color: #128c7e;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,10 +45,29 @@
     <div class="header-info">
         <p>📍 Uberlândia-MG</p>
         <p>⚡ Delivery + Rápido da Região</p>
-        <p> Estamos no Ifood "Pede um Ifood já"
-        <p> Entrega Gratis + Cupom de desconto
+        <p> Estamos no Ifood "Pede um Ifood já"</p>
+        <p> Entrega Grátis + Cupom de desconto</p>
     </div>
 </header>
+
+<!-- Seção de Banners Promocionais -->
+<div class="banner-container">
+    <img src="imagen1.jpg" alt="Super Promoção de Inverno" class="banner-image">
+    <br>
+    <a href="https://wa.me/5534998745318?text=Olá! Vi a promoção de inverno de 70% e gostaria de fazer um pedido." target="_blank" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</a>
+</div>
+
+<div class="banner-container">
+    <img src="imagen2.jpg" alt="Promoção Monte seu Açaí" class="banner-image">
+    <br>
+    <a href="https://wa.me/5534998745318?text=Olá! Quero aproveitar a promoção do Copo de Açaí com 6 adicionais por R$33,00." target="_blank" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</a>
+</div>
+
+<div class="banner-container">
+    <img src="imagen3.jpg" alt="Combos de Açaí" class="banner-image">
+    <br>
+    <a href="https://wa.me/5534998745318?text=Olá! Gostaria de pedir um dos Combos de 500ml." target="_blank" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</a>
+</div>
 
 <div id="promoBarra" onclick="abrirModal(document.getElementById('promoTexto').innerText, document.getElementById('promoValor').innerText)">
     <img id="promoFoto" src="">
@@ -59,10 +108,21 @@
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
-    const db = getFirestore(initializeApp({ apiKey: "AIzaSyDdgT50VAOkLWpDrbBJm_dLdfsehkSJBE", projectId: "zaptishopwhats" }));
+    const firebaseConfig = {
+        apiKey: "AIzaSyDCfQW5GoQGPLUYhHPNM2gJYNO7kZbyV9k",
+        authDomain: "zaptishopwhats-c6927.firebaseapp.com",
+        projectId: "zaptishopwhats-c6927",
+        storageBucket: "zaptishopwhats-c6927.firebasestorage.app",
+        messagingSenderId: "860482604045",
+        appId: "1:860482604045:web:9d400799d1903f7ab09944",
+        measurementId: "G-P3CYL2CQFC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
     
     let todos = [];
     let produtoAtual = { nome: "", preco: "" };
@@ -113,7 +173,6 @@
     });
 
     (async () => {
-        // Promoção 1
         const snap = await getDoc(doc(db, "config", "promocao_dia"));
         if (snap.exists()) {
             const d = snap.data();
@@ -123,7 +182,6 @@
             document.getElementById('promoFoto').src = d.img || '';
         }
 
-        // Promoção 2
         const snap2 = await getDoc(doc(db, "config", "promocao_extra"));
         if (snap2.exists()) {
             const d2 = snap2.data();
