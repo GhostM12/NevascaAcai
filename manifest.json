@@ -1,7 +1,7 @@
 {
   "name": "Açaí Nevasca",
   "short_name": "Nevasca",
-  "start_url": "./index.html",
+  "start_url": "/NevascaAcai/index.html",
   "display": "standalone",
   "background_color": "#4b0082",
   "theme_color": "#4b0082",
