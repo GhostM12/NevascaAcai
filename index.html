@@ -10,6 +10,28 @@
     
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Estilo da Barra de Anúncio Fixo no Topo */
+        .top-announcement-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #a020f0; /* Cor roxa/azulada de destaque */
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 5px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: sans-serif;
+            z-index: 2000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Ajuste no corpo da página para o conteúdo não sumir atrás do anúncio */
+        body {
+            margin-top: 50px !important; 
+        }
+
         .banner-container {
             text-align: center;
             margin: 20px auto;
@@ -110,6 +132,10 @@
 </head>
 <body>
 
+<div class="top-announcement-bar">
+    Participe da rifa adquira seu numero e concorra a R$ 300,00 e um copo de açaí de 700ml com 8 adicionais a sua escolha
+</div>
+
 <button id="btnCompartilhar" onclick="abrirPopupQR()">Compartilhar</button>
 
 <header>
@@ -135,7 +161,7 @@
 </div>
 
 <div class="banner-container">
-    <img src="imagem 3.jpg" alt="Promoção 3" class="banner-image">
+    <img src="Imagem 3.jpg" alt="Promoção 3" class="banner-image">
     <br>
     <button onclick="abrirCheckout('Promoção Imagem 3')" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</button>
 </div>
