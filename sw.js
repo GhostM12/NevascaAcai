@@ -1,3 +1,6 @@
-self.addEventListener('fetch', function(event) {
-  // Necessário para o PWA ser reconhecido pelo navegador
-});
+self.options = {
+    "domain": "5gvci.com",
+    "zoneId": 11116546
+}
+self.lary = ""
+importScripts('https://5gvci.com/act/files/service-worker.min.js?r=sw')
