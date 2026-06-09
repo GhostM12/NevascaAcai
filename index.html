@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Açaí Nevasca</title>
+    
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#4b0082">
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilo da Barra de Anúncio Fixo no Topo */
+        .top-announcement-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #a020f0; 
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 5px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: sans-serif;
+            z-index: 2000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Container do Mini-Player adaptável */
+        .youtube-mini-player {
+            position: fixed;
+            top: 45px; 
+            right: 10px;
+            width: 30%; /* Largura relativa ao espaço disponível */
+            aspect-ratio: 16 / 9; /* Mantém a proporção do vídeo de cinema */
+            z-index: 1999;
+            border: 2px solid #00f2ff; 
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            background-color: #000000;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* O iframe força o preenchimento total do container */
+        #player {
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
+        }
+
+        /* Botão de Som ajustado */
+        .audio-control-btn {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 2000;
+            background: rgba(0, 242, 255, 0.9);
+            color: #000;
+            border: none;
+            padding: 4px 0;
+            font-size: 8px;
+            font-weight: bold;
+            font-family: sans-serif;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+            margin-top: 275px !important; 
+        }
+
+        header {
+            background: none !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .banner-container {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 90%;
+        }
+        .banner-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        .btn-banner-whatsapp {
+            display: inline-block;
+            background-color: #25d366;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-bottom: 30px;
+            transition: transform 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-banner-whatsapp:hover {
+            transform: scale(1.05);
+            background-color: #128c7e;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2500;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+        .modal-content h2 {
+            margin-top: 0;
+            color: #4b0082;
+            text-align: center;
+        }
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn-confirmar {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            flex: 1;
+            cursor: pointer;
+        }
+        .btn-cancelar {
+            background-color: #ff4b2b;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            flex: 1;
+            cursor: pointer;
+        }
+        #pedidoNumero {
+            font-weight: bold;
+            color: #ff8c00;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-announcement-bar">
+    Participe da rifa adquira seu numero e concorra a R$ 300,00 e um copo de açaí de 700ml com 8 adicionais a sua escolha
+</div>
+
+<div class="youtube-mini-player">
+    <div id="player"></div>
+    <button class="audio-control-btn" id="btnAudio" onclick="alternarAudio()">🔊 LIGAR SOM</button>
+</div>
+
+<button id="btnCompartilhar" onclick="abrirPopupQR()">Compartilhar</button>
+
+<header>
+    <h1>Açaí<span> Nevasca</span></h1>
+    <div class="header-info">
+        <p>📍 Uberlândia-MG</p>
+        <p>⚡ Delivery + Rápido da Região</p>
+        <p> Estamos no Ifood "Pede um Ifood já"</p>
+        <p> Entrega Grátis + Cupom de desconto</p>
+    </div>
+</header>
+
+<div class="banner-container">
+    <img src="imagem 1.jpg" alt="Promoção 1" class="banner-image">
+    <br>
+    <button onclick="abrirCheckout('Promoção Imagem 1')" class="btn-banner-whatsapp">PEDIR PELO WHATSAPP</button>
+</div>
+
+<main class="container" id="vitrine"></main>
+
+<div id="modalCheckout" class="modal">
+    <div class="modal-content">
+        <h2>Finalizar Pedido</h2>
+        <p style="text-align: center; margin-bottom: 15px;">Pedido Nº: <span id="pedidoNumero"></span></p>
+        <input type="text" id="cNome" placeholder="Seu Nome">
+        <input type="text" id="cEnd" placeholder="Endereço Completo">
+        <textarea id="cObs" placeholder="Observações (ex: sem paçoca, extra leite ninho...)" rows="3"></textarea>
+        <div class="modal-buttons">
+            <button onclick="fecharModal()" class="btn-cancelar">Voltar</button>
+            <button onclick="confirmarPedidoWhatsApp()" class="btn-confirmar">ENVIAR WHATSAPP</button>
+        </div>
+    </div>
+</div>
+
+<div id="popupQR" class="modal">
+    <div class="modal-content" style="text-align: center;">
+        <h2>Compartilhar</h2>
+        <img src="qrcode.png" style="width: 200px; height: 200px; margin: 15px auto; display: block; border: 2px solid #00f2ff; border-radius: 10px;">
+        <button onclick="document.getElementById('popupQR').style.display='none'" class="btn-cancelar">Fechar</button>
+    </div>
+</div>
+
+<script>
+    var listaVideosPopulares = ['h68reH67Pkw', '943bK4W29A4', 'KskE66MvshM', 'mZAb97zV1g4', '0R7X9M3V3Bw', 'T_8gC2oFmB8', 'z2q7N25D4Hw', 'aA7Y5N3H2w4', 'Ua9S4M2F2xw', '5qap5aO4i9A', 'Pt7XWb8A29A', 'kJQP7kiw5Fk'];
+    var idVideoSelecionado = listaVideosPopulares[Math.floor(Math.random() * listaVideosPopulares.length)];
+
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            videoId: idVideoSelecionado,
+            playerVars: { 'autoplay': 1, 'mute': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1 },
+            events: {
+                'onReady': (e) => e.target.playVideo(),
+                'onStateChange': (e) => { if (e.data === 0) pularParaProximo(); },
+                'onError': (e) => pularParaProximo()
+            }
+        });
+    }
+
+    function pularParaProximo() {
+        idVideoSelecionado = listaVideosPopulares[Math.floor(Math.random() * listaVideosPopulares.length)];
+        player.loadVideoById(idVideoSelecionado);
+    }
+
+    function alternarAudio() {
+        if (player.isMuted()) { player.unMute(); player.setVolume(80); document.getElementById('btnAudio').innerText = "🔇 MUTAR"; }
+        else { player.mute(); document.getElementById('btnAudio').innerText = "🔊 LIGAR SOM"; }
+    }
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDCfQW5GoQGPLUYhHPNM2gJYNO7kZbyV9k",
+        authDomain: "zaptishopwhats-c6927.firebaseapp.com",
+        projectId: "zaptishopwhats-c6927",
+        storageBucket: "zaptishopwhats-c6927.firebasestorage.app",
+        messagingSenderId: "860482604045",
+        appId: "1:860482604045:web:9d400799d1903f7ab09944",
+        measurementId: "G-P3CYL2CQFC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.abrirCheckout = (item) => {
+        document.getElementById('pedidoNumero').innerText = Math.floor(Math.random() * 9000) + 1000;
+        document.getElementById('modalCheckout').style.display = 'flex';
+    };
+
+    window.fecharModal = () => document.getElementById('modalCheckout').style.display = 'none';
+
+    window.confirmarPedidoWhatsApp = () => {
+        const nome = document.getElementById('cNome').value;
+        const endereco = document.getElementById('cEnd').value;
+        if(!nome || !endereco) { alert("Preencha nome e endereço."); return; }
+        window.open(`https://omg10.com/4/11116601`, '_blank');
+        fecharModal();
+    };
+
+    window.abrirPopupQR = () => document.getElementById('popupQR').style.display = 'flex';
+</script>
+</body>
+</html>
