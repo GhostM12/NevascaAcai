@@ -40,13 +40,13 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        /* Container do Mini-Player Fixo Traseiro */
+        /* Container do Mini-Player Fixo Proporção 16:9 HD */
         .youtube-mini-player {
             position: fixed;
             top: 45px; 
             right: 10px;
             width: 160px;
-            height: 90px;
+            height: 90px; /* Mantém 16:9 em telas pequenas */
             z-index: 1999;
             border: 2px solid #00f2ff; 
             border-radius: 8px;
@@ -56,11 +56,12 @@
             display: block !important;
         }
 
-        #player {
-            width: 100% !important;
-            height: 100% !important;
-            display: block !important;
-            border: none;
+        /* Ajuste do elemento de vídeo para preencher o container perfeitamente */
+        #playerVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que o vídeo se adapte sem distorcer */
+            display: block;
         }
 
         /* Botão de Som Customizado Cyberpunk */
@@ -95,21 +96,22 @@
             margin-top: 185px !important; 
         }
 
+        /* Responsividade para telas maiores mantendo a proporção exata de 16:9 */
         @media (min-width: 768px) {
             .youtube-mini-player {
                 width: 280px;
-                height: 157px;
+                height: 157.5px; /* Proporção exata de 16:9 para largura de 280px */
                 right: 20px;
                 top: 50px;
             }
             .btn-audio-control {
                 width: 280px;
                 right: 20px;
-                top: 212px;
+                top: 215px; /* Reposicionado dinamicamente abaixo do player HD */
                 font-size: 13px;
             }
             body {
-                margin-top: 260px !important;
+                margin-top: 265px !important;
             }
         }
 
@@ -257,7 +259,11 @@
 </div>
 
 <div class="youtube-mini-player">
-    <div id="player"></div>
+    <video id="playerVideo" autoplay loop muted playsinline>
+        <source src="video1.mp4" type="video/mp4">
+        <source src="video1.webm" type="video/webm">
+        Seu navegador não suporta a reprodução de vídeo.
+    </video>
 </div>
 
 <button id="audioControlBtn" class="btn-audio-control muted" onclick="alternarAudio()">🔊 Ligar Som</button>
@@ -339,63 +345,18 @@
 </div>
 
 <script>
-    var meuVideoConfig = "https://www.youtube.com/live/m1vplAfSs_A?si=__rhSx52t22aBEpe";
-
-    function extrairID(url) {
-        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        var match = url.match(regExp);
-        return (match && match[2].length == 11) ? match[2] : url;
-    }
-
-    var idTratado = extrairID(meuVideoConfig);
-
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            videoId: idTratado,
-            playerVars: {
-                'autoplay': 1,
-                'mute': 1,
-                'controls': 0,
-                'modestbranding': 1,
-                'rel': 0,
-                'showinfo': 0,
-                'iv_load_policy': 3,
-                'origin': window.location.origin
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
-
-    function onPlayerReady(event) {
-        event.target.mute();
-        event.target.playVideo();
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.ENDED) {
-            player.playVideo(); 
-        }
-    }
-
-    // Função de controle do Botão de Mute/Unmute nativo da API do YouTube
+    // Nova lógica JS simplificada para controlar o áudio do vídeo local
     function alternarAudio() {
+        const video = document.getElementById('playerVideo');
         const btn = document.getElementById('audioControlBtn');
-        if (player && typeof player.isMuted === 'function') {
-            if (player.isMuted()) {
-                player.unMute();
+        
+        if (video) {
+            if (video.muted) {
+                video.muted = false;
                 btn.innerText = "🔇 Mutar Som";
                 btn.classList.remove('muted');
             } else {
-                player.mute();
+                video.muted = true;
                 btn.innerText = "🔊 Ligar Som";
                 btn.classList.add('muted');
             }
