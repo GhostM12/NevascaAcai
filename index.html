@@ -29,8 +29,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: #a020f0; 
-            color: #ffffff;
+            background-color: #a020f0; \n            color: #ffffff;
             text-align: center;
             padding: 10px 5px;
             font-size: 14px;
@@ -50,14 +49,8 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            opacity: 1; /* Permite ver o conteúdo que está atrás na página */
+            opacity: 1; /* Mantém o bloco visível para destacar a borda e o botão */
             transition: opacity 0.3s ease;
-        }
-
-        /* Destaca o player totalmente quando o utilizador interage */
-        .video-widget-container:hover,
-        .video-widget-container:active {
-            opacity: 1;
         }
 
         /* Container do Mini-Player Fixo Vertical */
@@ -71,12 +64,20 @@
             background-color: #000000;
         }
 
-        /* Ajuste do elemento de vídeo para preencher o container perfeitamente */
+        /* Ajuste do elemento de vídeo para preencher o container perfeitamente com opacidade customizada */
         #playerVideo {
             width: 100%;
             height: 100%;
             object-fit: cover; 
             display: block;
+            opacity: 0.65; /* Altere este valor de 0.0 a 1 para controlar a transparência apenas do vídeo */
+            transition: opacity 0.3s ease;
+        }
+
+        /* Deixa o vídeo totalmente nítido quando o utilizador interage com o player */
+        .video-widget-container:hover #playerVideo,
+        .video-widget-container:active #playerVideo {
+            opacity: 1;
         }
 
         /* Botão de Som Customizado Cyberpunk Acoplado */
@@ -109,10 +110,12 @@
                 right: 20px;
                 top: 50px;
                 gap: 8px;
-                opacity: 1; /* Sem transparência no desktop */
             }
             .youtube-mini-player {
                 height: 450px; /* Mantém a proporção vertical padrão do seu desktop */
+            }
+            #playerVideo {
+                opacity: 1; /* Vídeo 100% nítido no Desktop */
             }
             .btn-audio-control {
                 font-size: 15px;
